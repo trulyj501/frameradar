@@ -1,181 +1,36 @@
-# RageCheck MVP
+# FrameRadar (프레임 레이더)
 
-RageCheck is a text-only framing density analyzer for news content.
+글 속 프레이밍 신호를 분석해 주체적이고 비판적인 읽기를 돕는 서비스입니다. 단정적인 사실 확인(Fact Check)이 아닌, 텍스트가 의도적으로 감정을 자극하거나 편향을 유도하는 패턴을 탐지합니다.
 
-It detects manipulative linguistic framing patterns, not factual truth.
+## Tech Stack
 
-## Stack
+- **Frontend:** React (Vite), TypeScript, TailwindCSS, Recharts
+- **Backend:** Node.js, Express, TypeScript
+- **Database:** Supabase (PostgreSQL)
+- **AI Analysis:** Google Gemini API
 
-- Frontend: React (Vite) + TypeScript + TailwindCSS + Recharts
-- Backend: Node.js + Express + TypeScript
-- Database: Supabase (Postgres)
-- AI Analysis: Gemini API (text-only)
-
-## Folder Structure
-
-```text
-ragecheck/
-├─ backend/
-│  ├─ src/
-│  │  ├─ lib/
-│  │  │  ├─ env.ts
-│  │  │  └─ supabase.ts
-│  │  ├─ routes/
-│  │  │  └─ analysisRoutes.ts
-│  │  ├─ services/
-│  │  │  ├─ article.ts
-│  │  │  ├─ gemini.ts
-│  │  │  └─ scoring.ts
-│  │  ├─ types/
-│  │  │  └─ analysis.ts
-│  │  ├─ utils/
-│  │  │  └─ text.ts
-│  │  ├─ app.ts
-│  │  └─ index.ts
-│  ├─ .env.example
-│  ├─ package.json
-│  └─ tsconfig.json
-├─ frontend/
-│  ├─ src/
-│  │  ├─ components/
-│  │  │  └─ RadarSignalsChart.tsx
-│  │  ├─ pages/
-│  │  │  ├─ HomePage.tsx
-│  │  │  ├─ LeaderboardPage.tsx
-│  │  │  └─ ResultPage.tsx
-│  │  ├─ services/
-│  │  │  └─ api.ts
-│  │  ├─ styles/
-│  │  │  └─ index.css
-│  │  ├─ types/
-│  │  │  └─ api.ts
-│  │  ├─ App.tsx
-│  │  └─ main.tsx
-│  ├─ .env.example
-│  ├─ index.html
-│  ├─ package.json
-│  ├─ tailwind.config.ts
-│  └─ vite.config.ts
-├─ supabase/
-│  └─ schema.sql
-├─ .gitignore
-├─ package.json
-└─ README.md
-```
-
-## Core Features Implemented
-
-- Home page with URL input, text paste field, analyze button
-- Recent analyses list from Supabase with total rage score
-- Analysis engine for five signals:
-  - Emotional Heat
-  - Moral Outrage
-  - Black & White Thinking
-  - Us vs Them
-  - Fight-Picking
-- Score formula implementation:
-  - Raw Score = (pattern_count / sentence_count) * weight
-  - Normalized Score = Raw Score * (1000 / total_word_count)
-  - Contextual correction applied up to -30%
-- Result page with:
-  - Total Rage Score
-  - Radar chart (Recharts)
-  - Core facts summary
-  - Detailed signal breakdown
-  - ClearView left/right framing hypotheses
-  - Disclaimer
-- Leaderboard with Top 10 and range filter:
-  - Last 7 days
-  - All time
-
-## Scoring Criteria
-
-- Signal score range: `0~100`
-- Risk bands:
-  - `낮음`: `0~33`
-  - `보통`: `34~66`
-  - `높음`: `67~100`
-- Formula:
-  - `Raw = (pattern_count / sentence_count) * weight`
-  - `Normalized = Raw * (1000 / total_word_count)`
-  - `Adjusted = Normalized * (1 - contextual_correction)`
-  - contextual correction is capped at `-30%`
-- Total Rage Score is a weighted 0~100 composite:
-  - `Heat 25% + Outrage 20% + BlackWhite 20% + UsThem 20% + Fight 15%`
-- Consistency guards:
-  - If evidence exists, signal score is never shown as `0`
-  - If a signal score is positive but evidence extraction is empty, fallback evidence text is attached
-
-## API Endpoints
-
-- `POST /api/analyze`
-- `GET /api/analyses`
-- `GET /api/analyses/:id`
-- `GET /api/leaderboard?range=7d|all`
-
-## Supabase Setup
-
-1. Create a Supabase project.
-2. Run SQL in [`supabase/schema.sql`](/Users/jeongsujin/Downloads/ragecheck/supabase/schema.sql), or use backend init command below.
-3. Copy project URL and keys into backend env file.
-
-### Optional: Table Init via Command
-
-From `/Users/jeongsujin/Downloads/ragecheck`:
-
-```bash
-npm run db:init --workspace backend
-```
-
-Required env (in `backend/.env`):
-
-- `SUPABASE_PROJECT_REF`
-- `SUPABASE_DB_PASSWORD`
-
-Or set `SUPABASE_DB_URL` directly.
-
-## Environment Variables
-
-Backend: copy `backend/.env.example` to `backend/.env`
-
-```env
-PORT=4000
-FRONTEND_ORIGIN=http://localhost:5173
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-SUPABASE_PROJECT_REF=your_project_ref
-SUPABASE_DB_PASSWORD=your_db_password
-GEMINI_API_KEY=your_gemini_api_key
-GEMINI_MODEL=gemini-2.5-pro
-```
-
-Frontend: copy `frontend/.env.example` to `frontend/.env`
-
-```env
-VITE_API_BASE_URL=/api
-```
+## Core Features
+ 
+- 뉴스 기사, 칼럼 등의 URL 또는 본문 텍스트 입력 및 분석
+- 5가지 핵심 프레이밍 신호 탐지:
+  - 감정 자극 (Emotional Heat)
+  - 도덕적 분노 (Moral Outrage)
+  - 흑백논리 (Black & White Thinking)
+  - 편가르기 (Us vs Them)
+  - 갈등 조장 (Fight-Picking)
+- 분석 점수에 따른 프레이밍 지수 시각화 (레이더 차트)
+- 주간 및 전체 기간 기준 리더보드 (가장 강한 텍스트 랭킹)
 
 ## Run Locally
 
-From `/Users/jeongsujin/Downloads/ragecheck`:
+루트 폴더에서 아래 명령어들을 실행합니다:
 
 ```bash
+# 1. 패키지 설치
 npm install
+
+# 2. 로컬 개발 서버 실행
 npm run dev
 ```
 
-This starts:
-
-- Backend on `http://localhost:4000`
-- Frontend on `http://localhost:5173`
-
-## Production Build
-
-```bash
-npm run build
-```
-
-## Important Disclaimer
-
-`This is a probabilistic framing analysis tool. Not a fact check.`
+환경변수 세팅과 데이터베이스(Supabase) 설정이 필요합니다. 루트 및 각 폴더의 `.env.example` 파일을 참고하여 환경변수를 구성해 주세요.
