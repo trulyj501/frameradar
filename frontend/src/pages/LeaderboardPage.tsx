@@ -10,6 +10,7 @@ export const LeaderboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [activeTooltip, setActiveTooltip] = useState<"score" | "density" | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -63,34 +64,30 @@ export const LeaderboardPage = () => {
               <thead className="bg-white/40 backdrop-blur-md text-xs uppercase tracking-[0.08em] text-slate">
                 <tr>
                   <th className="px-4 py-3 whitespace-nowrap">순위</th>
-                  <th className="px-4 py-3 w-full min-w-[200px]">제목</th>
+                  <th className="px-4 py-3 min-w-[200px]">제목</th>
                   <th className="px-4 py-3 whitespace-nowrap">
-                    <span className="relative group inline-flex items-center gap-1 cursor-help">
+                    <span
+                      className="inline-flex items-center gap-1 cursor-pointer select-none group"
+                      onClick={() => setActiveTooltip('score')}
+                    >
                       프레임 점수
-                      <svg className="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="w-3.5 h-3.5 text-slate-400 group-hover:text-violet-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      {/* Tooltip */}
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[220px] p-2.5 bg-black text-white text-[12px] leading-relaxed rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl z-50 font-normal normal-case tracking-normal pointer-events-none">
-                        5가지 프레임 신호 점수를 합산하고 패턴 밀집도를 곱해 보정한 최종 프레임 강도입니다.
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-b-black"></div>
-                      </div>
                     </span>
                   </th>
                   <th className="px-4 py-3 whitespace-nowrap">
-                    <span className="relative group inline-flex items-center gap-1 cursor-help">
+                    <span
+                      className="inline-flex items-center gap-1 cursor-pointer select-none group"
+                      onClick={() => setActiveTooltip('density')}
+                    >
                       밀집도
-                      <svg className="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="w-3.5 h-3.5 text-slate-400 group-hover:text-violet-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      {/* Tooltip */}
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[240px] p-2.5 bg-black text-white text-[12px] leading-relaxed rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl z-50 font-normal normal-case tracking-normal pointer-events-none">
-                        100문장 당 감정/프레이밍 패턴이 등장하는 횟수입니다. 숫자가 높을수록 의도가 강하게 반영되어 있습니다.
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-b-black"></div>
-                      </div>
                     </span>
                   </th>
-                  <th className="pl-4 pr-6 py-3 whitespace-nowrap text-right w-[1%]">분석일</th>
+                  <th className="px-4 py-3 whitespace-nowrap text-right">분석일</th>
                 </tr>
               </thead>
               <tbody>
@@ -104,7 +101,7 @@ export const LeaderboardPage = () => {
                     </td>
                     <td className="px-4 py-3 font-semibold text-primary whitespace-nowrap">{row.total_score.toFixed(2)}</td>
                     <td className="px-4 py-3 text-slate whitespace-nowrap">{row.density.toFixed(4)}</td>
-                    <td className="pl-4 pr-6 py-3 text-slate whitespace-nowrap text-right w-[1%]">{new Date(row.created_at).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-slate whitespace-nowrap text-right">{new Date(row.created_at).toLocaleDateString()}</td>
                   </tr>
                 ))}
 
@@ -120,6 +117,37 @@ export const LeaderboardPage = () => {
           </div>
         ) : null}
       </section>
+
+      {/* Info Tooltip Modal */}
+      {activeTooltip && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/20 backdrop-blur-sm"
+          onClick={() => setActiveTooltip(null)}
+        >
+          <div
+            className="bg-white p-6 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] w-full max-w-[320px] animate-rise"
+            onClick={e => e.stopPropagation()}
+          >
+            <h3 className="font-bold text-lg text-slate-800 mb-3 flex items-center gap-2">
+              <svg className="w-5 h-5 text-violet-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {activeTooltip === 'score' ? "프레임 점수 란?" : "밀집도 란?"}
+            </h3>
+            <p className="text-slate-600 leading-relaxed text-[15px] break-keep">
+              {activeTooltip === 'score'
+                ? "5가지 프레임 신호 점수를 합산하고 패턴 밀집도를 곱해 보정한 최종 프레임 강도입니다. 높은 점수가 반드시 나쁜 기사를 뜻하지 않으며, 감정적 표현이 강하게 쓰였다는 지표입니다."
+                : "100문장 당 감정·프레이밍 패턴이 등장하는 평균 횟수입니다. 이 숫자가 높을수록 글쓴이의 주관적 의도가 문장에 촘촘하게 박혀있을 확률이 높습니다."}
+            </p>
+            <button
+              className="mt-6 w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl transition-colors"
+              onClick={() => setActiveTooltip(null)}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
