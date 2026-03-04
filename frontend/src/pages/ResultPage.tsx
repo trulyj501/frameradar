@@ -426,7 +426,7 @@ export const ResultPage = () => {
                 <tr>
                   <th className="py-4 pl-0 pr-4 w-[130px] sm:w-[160px] font-bold whitespace-nowrap">신호 카테고리</th>
                   <th className="py-4 px-2 w-[90px] sm:w-[110px] font-bold whitespace-nowrap">위험도</th>
-                  <th className="py-4 pl-4 md:pl-8 font-bold min-w-[300px] sm:min-w-[400px] md:min-w-0">탐지된 패턴 및 근거</th>
+                  <th className="py-4 pl-4 md:pl-8 font-bold min-w-[200px] sm:min-w-[280px] md:min-w-0">탐지된 패턴 및 근거</th>
                 </tr>
               </thead>
               <tbody>
