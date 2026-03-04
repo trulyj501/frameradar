@@ -390,7 +390,7 @@ export const ResultPage = () => {
         <hr className="border-slate-100 border-t mb-8" />
 
         {/* Signal Bars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[72px] gap-y-7 mx-4 mb-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[72px] gap-y-7 mb-4">
           {signalItems.map((item) => (
             <div key={item.key} className="w-full">
               <SignalBar name={item.short} score={item.signal.score} color={item.color} description={item.description} />
