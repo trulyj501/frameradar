@@ -162,20 +162,19 @@ const emptySignalDetail: AnalysisResponse["details"]["signals"]["emotional_heat"
   evidence: []
 };
 
-const SignalBar = ({ name, score, color, description }: { name: string; score: number; color: string; description: string; }) => {
+const SignalBar = ({ name, score, color, description, onInfoClick }: { name: string; score: number; color: string; description: string; onInfoClick: () => void; }) => {
   const value = Math.max(0, Math.min(100, Math.round(score)));
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-[14px] font-bold text-slate-800">
-        <span className="flex items-center gap-1.5 relative group">
+        <span
+          className="flex items-center gap-1.5 cursor-pointer group select-none"
+          onClick={onInfoClick}
+        >
           {name}
-          <svg className="w-4 h-4 text-slate-400 cursor-help" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-4 h-4 text-slate-400 group-hover:text-violet-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <div className="absolute bottom-full left-0 mb-2 w-[260px] p-3.5 bg-black text-white text-[13px] leading-relaxed rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl z-[100] font-normal pointer-events-none">
-            {description}
-            <div className="absolute top-full left-4 border-[6px] border-transparent border-t-black"></div>
-          </div>
         </span>
         <span className="text-slate-900 font-bold">{value}%</span>
       </div>
@@ -241,6 +240,7 @@ export const ResultPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState(false);
+  const [activeSignalTooltip, setActiveSignalTooltip] = useState<{ name: string, description: string } | null>(null);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -393,7 +393,13 @@ export const ResultPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[72px] gap-y-7 mb-4">
           {signalItems.map((item) => (
             <div key={item.key} className="w-full">
-              <SignalBar name={item.short} score={item.signal.score} color={item.color} description={item.description} />
+              <SignalBar
+                name={item.short}
+                score={item.signal.score}
+                color={item.color}
+                description={item.description}
+                onInfoClick={() => setActiveSignalTooltip({ name: item.short, description: item.description })}
+              />
             </div>
           ))}
         </div>
