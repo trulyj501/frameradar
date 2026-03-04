@@ -164,7 +164,7 @@ export const HomePage = () => {
             설계된 프레임입니까?
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-base md:text-lg text-slate break-keep">
-            글 속 프레이밍 신호를 분석해 주체적이고 비판적인 읽기를 돕습니다.
+            남의 의도대로 읽고 있지 않나요? 숨은 프레임과 어그로, 한 번에 잡아드려요.
           </p>
         </div>
 

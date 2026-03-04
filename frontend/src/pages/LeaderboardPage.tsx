@@ -90,7 +90,7 @@ export const LeaderboardPage = () => {
                       </div>
                     </span>
                   </th>
-                  <th className="px-4 py-3 whitespace-nowrap">분석일</th>
+                  <th className="pl-4 pr-0 py-3 whitespace-nowrap">분석일</th>
                 </tr>
               </thead>
               <tbody>
@@ -104,7 +104,7 @@ export const LeaderboardPage = () => {
                     </td>
                     <td className="px-4 py-3 font-semibold text-primary whitespace-nowrap">{row.total_score.toFixed(2)}</td>
                     <td className="px-4 py-3 text-slate whitespace-nowrap">{row.density.toFixed(4)}</td>
-                    <td className="px-4 py-3 text-slate whitespace-nowrap">{new Date(row.created_at).toLocaleDateString()}</td>
+                    <td className="pl-4 pr-0 py-3 text-slate whitespace-nowrap">{new Date(row.created_at).toLocaleDateString()}</td>
                   </tr>
                 ))}
 
