@@ -346,20 +346,20 @@ export const ResultPage = () => {
             <span className="inline-flex items-center px-3 py-1 bg-slate-100 text-slate-800 rounded-full text-[11px] font-bold tracking-[0.05em] uppercase">
               {domainName}
             </span>
-            <span className="relative group inline-flex items-center gap-1.5 px-3 py-1 bg-[#f5f3ff] text-[#9333ea] rounded-full text-[11px] font-bold tracking-[0.05em] uppercase cursor-pointer">
+            <span
+              role="button"
+              tabIndex={0}
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#f5f3ff] text-[#9333ea] rounded-full text-[11px] font-bold tracking-[0.05em] uppercase cursor-pointer select-none group"
+              onClick={() => setActiveSignalTooltip({ name: '밀집도', description: '100문장 당 감정/프레이밍 패턴이 등장하는 횟수입니다. 숫자가 높을수록 글의 의도가 강하게 반영되어 있습니다.' })}
+              onKeyDown={(e) => e.key === 'Enter' && setActiveSignalTooltip({ name: '밀집도', description: '100문장 당 감정/프레이밍 패턴이 등장하는 횟수입니다. 숫자가 높을수록 글의 의도가 강하게 반영되어 있습니다.' })}
+            >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-[12px] h-[12px]">
                 <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
               </svg>
               프레임 밀집도 {analysis.density.toFixed(2)}
-              <svg className="w-4 h-4 text-slate-400 cursor-help ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4 text-[#9333ea]/70 group-hover:text-[#9333ea] transition-colors ml-0.5 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-
-              {/* Tooltip */}
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-[260px] p-3.5 bg-black text-white text-[13px] leading-relaxed rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl z-[100] font-normal normal-case tracking-normal pointer-events-none">
-                100문장 당 감정/프레이밍 패턴이 등장하는 횟수입니다. 숫자가 높을수록 글의 의도가 강하게 반영되어 있습니다.
-                <div className="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-black"></div>
-              </div>
             </span>
           </div>
 
