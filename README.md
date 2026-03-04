@@ -2,6 +2,8 @@
 
 글 속 프레이밍 신호를 분석해 주체적이고 비판적인 읽기를 돕는 서비스입니다. 단정적인 사실 확인(Fact Check)이 아닌, 텍스트가 의도적으로 감정을 자극하거나 편향을 유도하는 패턴을 탐지합니다.
 
+> **Note:** 본 서비스(FrameRadar)의 핵심 분석 로직과 프레이밍 감지 기준은 **RageCheck 방법론(Methodology)**을 참고하여 설계되었습니다.
+
 ## Tech Stack
 
 - **Frontend:** React (Vite), TypeScript, TailwindCSS, Recharts
