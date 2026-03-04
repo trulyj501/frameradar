@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./src/components/radarsignalschart.tsx","./src/pages/homepage.tsx","./src/pages/leaderboardpage.tsx","./src/pages/resultpage.tsx","./src/services/api.ts","./src/types/api.ts","./src/utils/html.ts"],"version":"5.9.3"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/radarsignalschart.tsx","./src/pages/aboutpage.tsx","./src/pages/homepage.tsx","./src/pages/leaderboardpage.tsx","./src/pages/resultpage.tsx","./src/services/api.ts","./src/types/api.ts","./src/utils/html.ts"],"version":"5.9.3"}
