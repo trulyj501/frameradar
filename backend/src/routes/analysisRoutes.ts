@@ -102,7 +102,7 @@ const toLeaderboardItem = (item: LocalAnalysisRecord) => ({
   id: item.id,
   title: item.title,
   source_url: item.source_url,
-  total_score: computeWeightedTotalFromColumns(item),
+  total_score: item.total_score,
   density: item.density,
   heat_score: item.heat_score,
   outrage_score: item.outrage_score,
@@ -805,7 +805,7 @@ analysisRouter.get("/analyses", async (req, res, next) => {
       bw_score: item.bw_score,
       us_them_score: item.us_them_score,
       fight_score: item.fight_score,
-      total_score: computeWeightedTotalFromColumns(item),
+      total_score: item.total_score,
       density: item.density,
       verdict: item.verdict,
       created_at: item.created_at
@@ -814,7 +814,7 @@ analysisRouter.get("/analyses", async (req, res, next) => {
     const merged = [...(data ?? []), ...fallback]
       .map((item) => ({
         ...item,
-        total_score: computeWeightedTotalFromColumns(item)
+        total_score: item.total_score
       }))
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       .slice(0, Number.isNaN(limit) ? 20 : Math.min(Math.max(limit, 1), 100));
@@ -859,7 +859,7 @@ analysisRouter.get("/analyses/:id", async (req, res, next) => {
     return res.json({
       analysis: {
         ...data,
-        total_score: computeWeightedTotalFromSignalDetails(normalizedSignals)
+        total_score: data.total_score
       },
       details: {
         core_facts: data.core_facts,
@@ -937,7 +937,7 @@ analysisRouter.get("/leaderboard", async (req, res, next) => {
       })
       .map((item) => ({
         ...item,
-        total_score: computeWeightedTotalFromColumns(item)
+        total_score: item.total_score
       }))
       .sort((a, b) => b.total_score - a.total_score)
       .slice(0, 10);
