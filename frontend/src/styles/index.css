@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color: #111827;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Space Grotesk", ui-sans-serif, system-ui;
+    color: #111827;
+    background-color: #F9FAFB;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .card-surface {
+    @apply rounded-2xl bg-white border border-[#E5E7EB] transition-all hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-0.5;
+  }
+}
+
+@layer utilities {
+  .glass-input {
+    @apply bg-transparent outline-none transition-all placeholder:text-slate-400;
+  }
+}
