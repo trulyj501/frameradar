@@ -410,7 +410,7 @@ export const ResultPage = () => {
         <p className="mt-2 text-[13px] text-slate">
           점수 기준: 매우 낮음 0-5 / 낮음 6-33 / 중간 34-66 / 높음 67-84 / 매우 높음 85-100
         </p>
-        <div className="mt-8">
+        <div className="mt-8 overflow-x-auto">
           <table className="min-w-full border-collapse text-left text-sm">
             <thead className="text-[13px] text-slate-500 font-bold border-b border-slate-100">
               <tr>
@@ -426,7 +426,7 @@ export const ResultPage = () => {
                 const narrative = buildNarrative(signal.key, detail);
                 return (
                   <tr key={signal.key} className="border-b border-slate-50 align-top transition-colors hover:bg-slate-50/50">
-                    <td className="py-3 pl-0 pr-4 font-bold text-[#334155] flex items-start mt-[1px] gap-1.5 whitespace-nowrap">{signal.title}</td>
+                    <td className="py-3 pl-0 pr-4 font-bold text-[#334155] mt-[1px] whitespace-nowrap align-top">{signal.title}</td>
                     <td className="py-3 px-2 text-ink whitespace-nowrap">
                       <span className="rounded-full bg-[#fef2f2] px-3 py-1 text-[12px] font-bold text-[#ef4444] tracking-wide inline-block">
                         {risk}

@@ -62,9 +62,9 @@ export const LeaderboardPage = () => {
             <table className="min-w-full border-collapse text-left text-sm">
               <thead className="bg-white/40 backdrop-blur-md text-xs uppercase tracking-[0.08em] text-slate">
                 <tr>
-                  <th className="px-4 py-3">순위</th>
-                  <th className="px-4 py-3">제목</th>
-                  <th className="px-4 py-3">
+                  <th className="px-4 py-3 whitespace-nowrap">순위</th>
+                  <th className="px-4 py-3 w-full min-w-[200px]">제목</th>
+                  <th className="px-4 py-3 whitespace-nowrap">
                     <span className="relative group inline-flex items-center gap-1 cursor-help">
                       프레임 점수
                       <svg className="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -77,7 +77,7 @@ export const LeaderboardPage = () => {
                       </div>
                     </span>
                   </th>
-                  <th className="px-4 py-3">
+                  <th className="px-4 py-3 whitespace-nowrap">
                     <span className="relative group inline-flex items-center gap-1 cursor-help">
                       밀집도
                       <svg className="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -90,21 +90,21 @@ export const LeaderboardPage = () => {
                       </div>
                     </span>
                   </th>
-                  <th className="px-4 py-3">분석일</th>
+                  <th className="px-4 py-3 whitespace-nowrap">분석일</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((row, index) => (
                   <tr key={row.id} className="border-t border-white/30 transition-colors hover:bg-white/30">
-                    <td className="px-4 py-3 font-semibold text-ink">#{index + 1}</td>
-                    <td className="px-4 py-3 text-ink">
+                    <td className="px-4 py-3 font-semibold text-ink whitespace-nowrap">#{index + 1}</td>
+                    <td className="px-4 py-3 text-ink min-w-[200px]">
                       <Link to={`/analysis/${row.id}`} className="hover:text-primary transition-colors underline-offset-4 hover:underline">
                         {decodeHtmlEntities(row.title)}
                       </Link>
                     </td>
-                    <td className="px-4 py-3 font-semibold text-primary">{row.total_score.toFixed(2)}</td>
-                    <td className="px-4 py-3 text-slate">{row.density.toFixed(4)}</td>
-                    <td className="px-4 py-3 text-slate">{new Date(row.created_at).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 font-semibold text-primary whitespace-nowrap">{row.total_score.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-slate whitespace-nowrap">{row.density.toFixed(4)}</td>
+                    <td className="px-4 py-3 text-slate whitespace-nowrap">{new Date(row.created_at).toLocaleDateString()}</td>
                   </tr>
                 ))}
 
