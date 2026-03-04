@@ -158,7 +158,7 @@ export const HomePage = () => {
   return (
     <div className="space-y-8 pb-10 animate-rise">
       <section>
-        <div className="pt-28 md:pt-32 pb-16 text-center px-6 md:px-10">
+        <div className="pt-12 md:pt-32 pb-16 text-center px-6 md:px-10">
           <h1 className="text-[2rem] sm:text-5xl md:text-7xl font-extrabold tracking-tight text-ink mb-6 leading-snug md:leading-tight">
             방금 읽은 글, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondaryPink">팩트입니까,</span><br />
             설계된 프레임입니까?
@@ -206,7 +206,7 @@ export const HomePage = () => {
 
               <div className="bg-white p-3 md:p-4">
                 {inputType === "url" ? (
-                  <div className="flex flex-col sm:flex-row gap-3 items-center">
+                  <div className="flex flex-col sm:flex-row gap-3 items-end sm:items-center">
                     <div className="flex-1 w-full p-2 transition-all">
                       <span className="sr-only">URL</span>
                       <input
@@ -253,7 +253,7 @@ export const HomePage = () => {
                       <button
                         type="submit"
                         disabled={loading || remainingQuota === 0}
-                        className="flex items-center justify-center gap-2 rounded-2xl bg-primary px-10 py-4 h-[60px] text-base font-bold text-white transition-all hover:bg-primaryDark active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 shadow-lg shadow-primary/20 sm:w-auto w-full"
+                        className="flex items-center justify-center gap-2 rounded-2xl bg-primary px-10 py-4 h-[60px] text-base font-bold text-white transition-all hover:bg-primaryDark active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 shadow-lg shadow-primary/20"
                       >
                         {loading ? (
                           <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
