@@ -1,6 +1,9 @@
 import type { Config } from "tailwindcss";
 
 export default {
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
