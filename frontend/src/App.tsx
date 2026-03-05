@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import { HomePage } from "./pages/HomePage";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
 import { ResultPage } from "./pages/ResultPage";
@@ -68,6 +69,8 @@ function App() {
           </p>
         </div>
       </footer>
+
+      <Analytics />
     </div>
   );
 }
