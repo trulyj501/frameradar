@@ -11,7 +11,9 @@ export const HomePage = () => {
   const [text, setText] = useState("");
   const [inputType, setInputType] = useState<"url" | "text">("url");
   const [loading, setLoading] = useState(false);
-  const [loadingPhase, setLoadingPhase] = useState<"starting" | "fetching" | "analyzing" | "slow" | null>(null);
+  const [loadingPhase, setLoadingPhase] = useState<"starting" | "fetching" | "analyzing" | "almost_done" | "slow" | null>(null);
+  const [messageIndex, setMessageIndex] = useState(0);
+  const [fadeOpacity, setFadeOpacity] = useState(1);
   const [remainingQuota, setRemainingQuota] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -19,6 +21,7 @@ export const HomePage = () => {
   const [recent, setRecent] = useState<AnalysisRecord[]>([]);
   const fetchTimerRef = useRef<number | null>(null);
   const analyzeTimerRef = useRef<number | null>(null);
+  const almostDoneTimerRef = useRef<number | null>(null);
   const slowTimerRef = useRef<number | null>(null);
   const urlInputRef = useRef<HTMLInputElement>(null);
   const textInputRef = useRef<HTMLTextAreaElement>(null);
@@ -58,11 +61,45 @@ export const HomePage = () => {
       if (analyzeTimerRef.current !== null) {
         window.clearTimeout(analyzeTimerRef.current);
       }
+      if (almostDoneTimerRef.current !== null) {
+        window.clearTimeout(almostDoneTimerRef.current);
+      }
       if (slowTimerRef.current !== null) {
         window.clearTimeout(slowTimerRef.current);
       }
     };
   }, []);
+
+  useEffect(() => {
+    let interval: number;
+    let fadeTimeout: number;
+
+    const changeMessage = (totalMsgs: number) => {
+      setFadeOpacity(0);
+      fadeTimeout = window.setTimeout(() => {
+        setMessageIndex((prev) => (prev + 1) % totalMsgs);
+        setFadeOpacity(1);
+      }, 200);
+    };
+
+    if (loadingPhase === "almost_done") {
+      setMessageIndex(0);
+      setFadeOpacity(1);
+      interval = window.setInterval(() => changeMessage(3), 3000);
+    } else if (loadingPhase === "slow") {
+      setMessageIndex(0);
+      setFadeOpacity(1);
+      interval = window.setInterval(() => changeMessage(3), 4000);
+    } else {
+      setMessageIndex(0);
+      setFadeOpacity(1);
+    }
+
+    return () => {
+      window.clearInterval(interval);
+      window.clearTimeout(fadeTimeout);
+    };
+  }, [loadingPhase]);
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -96,6 +133,9 @@ export const HomePage = () => {
       if (analyzeTimerRef.current !== null) {
         window.clearTimeout(analyzeTimerRef.current);
       }
+      if (almostDoneTimerRef.current !== null) {
+        window.clearTimeout(almostDoneTimerRef.current);
+      }
       if (slowTimerRef.current !== null) {
         window.clearTimeout(slowTimerRef.current);
       }
@@ -107,10 +147,14 @@ export const HomePage = () => {
         setLoadingPhase("analyzing");
         setActionMessage("AI가 프레이밍 패턴을 계산하고 있습니다...");
       }, 2500);
+      almostDoneTimerRef.current = window.setTimeout(() => {
+        setLoadingPhase("almost_done");
+        setActionMessage("곧 분석이 완료됩니다...");
+      }, 12000);
       slowTimerRef.current = window.setTimeout(() => {
         setLoadingPhase("slow");
-        setActionMessage("응답이 지연되고 있습니다. 잠시만 기다려 주세요...");
-      }, 12000);
+        setActionMessage("지연되고 있습니다. 잠시만 기다려 주세요...");
+      }, 25000);
 
       const response = await analyzeArticle({
         url: inputType === "url" ? url : undefined,
@@ -145,6 +189,10 @@ export const HomePage = () => {
       if (analyzeTimerRef.current !== null) {
         window.clearTimeout(analyzeTimerRef.current);
         analyzeTimerRef.current = null;
+      }
+      if (almostDoneTimerRef.current !== null) {
+        window.clearTimeout(almostDoneTimerRef.current);
+        almostDoneTimerRef.current = null;
       }
       if (slowTimerRef.current !== null) {
         window.clearTimeout(slowTimerRef.current);
@@ -268,14 +316,34 @@ export const HomePage = () => {
             </div>
           </div>
           <div className="max-w-3xl mx-auto px-6 mt-4 flex flex-col gap-2">
-            {loading ? (
-              <p className="text-sm text-center text-slate-500 animate-pulse">
-                {loadingPhase === "starting" ? "분석 요청을 전송하고 있습니다..."
-                  : loadingPhase === "fetching" ? "분석 중: URL 본문을 수집하고 있습니다..."
-                    : loadingPhase === "analyzing" ? "분석 중: AI가 프레이밍 패턴을 계산하고 있습니다..."
-                      : "응답이 지연되고 있습니다. 잠시만 기다려 주세요..."}
-              </p>
-            ) : null}
+            {loading ? (() => {
+              let displayMessage = "분석 요청을 전송하고 있습니다...";
+              if (loadingPhase === "fetching") displayMessage = "URL 본문을 수집하고 있습니다...";
+              else if (loadingPhase === "analyzing") displayMessage = "AI가 프레이밍 패턴을 계산하고 있습니다...";
+              else if (loadingPhase === "almost_done") {
+                const msgs = [
+                  "곧 분석이 완료됩니다...",
+                  "결과를 정리하고 있습니다...",
+                  "분석 리포트를 생성하고 있습니다..."
+                ];
+                displayMessage = msgs[messageIndex] || msgs[0];
+              } else if (loadingPhase === "slow") {
+                const msgs = [
+                  "서버가 바쁩니다. 거의 다 왔어요!",
+                  "조금만 더 기다려 주세요. 꼼꼼히 분석 중입니다...",
+                  "복잡한 기사일수록 더 정확해져요. 잠시만요..."
+                ];
+                displayMessage = msgs[messageIndex] || msgs[0];
+              }
+
+              return (
+                <p className="text-sm text-center text-slate-500">
+                  <span className={`inline-block transition-opacity duration-200 ${fadeOpacity === 0 ? 'opacity-0' : 'opacity-100'}`}>
+                    {displayMessage}
+                  </span>
+                </p>
+              );
+            })() : null}
             {error ? <p className="text-sm text-center text-red-500 font-medium">{error}</p> : null}
             {notice ? <p className="text-sm text-center text-amber-600">{notice}</p> : null}
           </div>
