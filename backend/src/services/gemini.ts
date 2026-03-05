@@ -11,7 +11,7 @@ const signalSchema = z.object({
 });
 
 const analysisSchema = z.object({
-  core_facts: z.array(z.string()).default([]),
+  core_facts: z.array(z.string()).min(2).max(4).default([]),
   signals: z.object({
     emotional_heat: signalSchema,
     moral_outrage: signalSchema,
@@ -75,7 +75,7 @@ CRITICAL TONE RULE (종결어미 규칙):
 반환 형식(JSON only):
 
 {
-  "core_facts": ["객관적 사실 1 (음/슴체 사용)", "객관적 사실 2 (음/슴체 사용)"],
+  "core_facts": ["객관적 사실 1 (음/슴체 사용)", "객관적 사실 2 (음/슴체 사용)", "(필요시 최대 4개까지 추가)"],
   "signals": {
     "emotional_heat": { "score": 0, "pattern_count": 0, "contextual_correction": 0, "evidence": ["근거 문장 (음/슴체 사용)"] },
     "moral_outrage": { "score": 0, "pattern_count": 0, "contextual_correction": 0, "evidence": ["근거 문장 (음/슴체 사용)"] },
@@ -93,7 +93,7 @@ CRITICAL TONE RULE (종결어미 규칙):
 출력 작성 지침:
 - 모든 서술어는 반드시 '~음', '~함'과 같이 명사형 종결어미(음/슴체)를 사용한다. (예: "공포감을 조성함", "갈등을 유발함")
 - 단, verdict(종합 평결) 항목의 문장 종결은 반드시 합쇼체('~합니다', '~입니다')를 사용한다.
-- core_facts: 감정 표현을 제거한 건조한 사실 요약 2개만 작성
+- core_facts: 감정 표현을 제거한 건조한 사실 요약을 최소 2개 이상 최대 4개까지 작성
 - evidence: 해당 신호를 뒷받침하는 설명 문장 1~2개 (필요시 원문 표현 인용 포함)
   - 한 항목은 120자 이내로 작성
   - 긴 본문을 통째로 복사하지 말 것
