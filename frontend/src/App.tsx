@@ -4,6 +4,8 @@ import { HomePage } from "./pages/HomePage";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
 import { ResultPage } from "./pages/ResultPage";
 import AboutPage from "./pages/AboutPage";
+import { GuidePage } from "./pages/GuidePage";
+import { GuideDetailPage } from "./pages/GuideDetailPage";
 import { fetchUsageStatus } from "./services/api";
 
 
@@ -36,6 +38,14 @@ function App() {
             <NavLink className={({ isActive }) => `transition-colors hover:text-ink ${isActive ? "text-ink" : "text-slate-500"}`} to="/leaderboard">
               리더보드
             </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                `transition-colors hover:text-ink ${isActive ? "text-ink" : "text-slate-500"}`
+              }
+              to="/guide"
+            >
+              100% 활용법
+            </NavLink>
             {remainingQuota !== null && (
               <span className="text-[14px] font-bold text-primary bg-primary/10 px-3 py-1 rounded-full pointer-events-none hidden sm:inline-block">
                 남은 분석 건수: {remainingQuota.toLocaleString()}
@@ -50,6 +60,8 @@ function App() {
             <Route path="/analysis/:id" element={<ResultPage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/guide" element={<GuidePage />} />
+            <Route path="/guide/:slug" element={<GuideDetailPage />} />
           </Routes>
         </main>
       </div>

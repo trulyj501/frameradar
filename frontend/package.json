@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
     "lucide-react": "^0.576.0",
+    "marked": "^17.0.4",
     "motion": "^12.34.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

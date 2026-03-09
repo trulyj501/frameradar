@@ -362,11 +362,19 @@ export const HomePage = () => {
           ) : (
             recent.slice(0, 8).map((item) => {
               const displayTitle = item.title?.trim() || item.content?.split('\n')[0]?.trim() || "제목 없음";
+              const href = `/analysis/${item.id}`;
               return (
                 <Link
-                  to={`/analysis/${item.id}`}
                   key={item.id}
-                  className="card-surface flex flex-col p-5 h-full group hover:-translate-y-1 transition-transform"
+                  to={href}
+                  className="card-surface flex flex-col p-5 h-full group transition-shadow"
+                  onMouseDown={(e) => {
+                    // Safari: 수정키 없는 좌클릭이면 mousedown에서 즉시 navigate
+                    // (Safari는 첫 클릭을 hover 활성화로 처리하므로 mousedown에서 선제 대응)
+                    if (e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+                      navigate(href);
+                    }
+                  }}
                 >
                   <div className="flex items-center justify-end mb-3">
                     {item.total_score >= 85 ? (
@@ -398,6 +406,10 @@ export const HomePage = () => {
                 </Link>
               )
             })
+
+
+
+
           )}
         </div>
       </section>
