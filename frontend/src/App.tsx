@@ -78,6 +78,12 @@ function App() {
           <p className="text-[12px] text-white leading-relaxed max-w-2xl mx-auto px-4 break-keep">
             이 분석은 언어 패턴 탐지에 기반한 교육용 도구입니다. 사실 여부 및 정확성을 검증하지 않으며, 팩트체크 시스템이 아닙니다.
           </p>
+          <p className="text-[12px] text-white/60 mt-4">
+            &copy; 2026 Built by{" "}
+            <a href="https://www.faithfwd.cc/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline underline-offset-4">
+              Faith Forward
+            </a>
+          </p>
         </div>
       </footer>
     </div>
