@@ -500,10 +500,10 @@ export const ResultPage = () => {
             <div className="flex-grow border-t border-slate-100"></div>
             <div className="shrink-0 mx-4 text-center space-y-1">
               <span className="block text-[#64748b] text-[14px] font-medium tracking-wide">
-                같은 사실, 다르게 읽힙니다
+                👀 같은 사실, 다르게 읽힙니다
               </span>
               <span className="block text-[#64748b] text-[14px] font-medium tracking-wide">
-                어느 관점의 표현이 자연스럽게 느껴졌나요?
+                어떤 관점에서 보느냐에 따라 같은 사건도 다르게 해석될 수 있습니다.
               </span>
             </div>
             <div className="flex-grow border-t border-slate-100"></div>
