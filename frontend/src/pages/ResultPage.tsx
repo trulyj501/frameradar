@@ -1,9 +1,10 @@
 import { AlertCircle, ChevronLeft, Search, Share2, Sparkles, AlertTriangle } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fetchAnalysisById } from "../services/api";
 import { AnalysisResponse } from "../types/api";
 import { decodeHtmlEntities } from "../utils/html";
+import { useSEO } from "../hooks/useSEO";
 
 const parseFocusText = (text: string, defaultLabel: string): { label: string; description: string } => {
   if (!text) return { label: defaultLabel, description: "분석 결과가 없습니다." };
@@ -269,6 +270,69 @@ export const ResultPage = () => {
       })
       .finally(() => setLoading(false));
   }, [id]);
+
+  // --- SEO: 분석 결과 기반 동적 메타 태그 ---
+  const seoOptions = useMemo(() => {
+    const pageUrl = `https://frameradar.faithfwd.cc/analysis/${id}`;
+
+    if (!payload) {
+      return {
+        title: "분석 결과 불러오는 중",
+        description: "프레임 레이더가 기사의 언어 패턴과 프레임을 분석하고 있습니다.",
+        canonical: pageUrl,
+        noindex: true, // 로딩/에러 상태는 색인 제외
+      };
+    }
+
+    const { analysis } = payload;
+    const decodedTitle = decodeHtmlEntities(analysis.title);
+    const score = Math.round(analysis.total_score);
+    const scoreLevel =
+      score <= 33 ? "안정" : score <= 66 ? "주의" : score <= 84 ? "경계" : "심각";
+
+    let sourceDomain = "";
+    try {
+      if (analysis.source_url) {
+        sourceDomain = new URL(analysis.source_url).hostname.replace(/^www\./, "");
+      }
+    } catch (_) {/* noop */}
+
+    const metaDescription = `"${decodedTitle.slice(0, 40)}${decodedTitle.length > 40 ? '…' : ''}" — 프레임 점수 ${score}점 (${scoreLevel}). ${
+      sourceDomain ? `출처: ${sourceDomain}. ` : ""
+    }감정적 가열, 흑백 논리 등 5가지 신호를 분석한 결과를 확인하세요.`;
+
+    const ogTitle = `프레임 점수 ${score}점 | ${decodedTitle.slice(0, 50)}${decodedTitle.length > 50 ? '…' : ''}`;
+
+    // JSON-LD: Article 구조화 데이터
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: decodedTitle,
+      description: metaDescription,
+      url: pageUrl,
+      publisher: {
+        "@type": "Organization",
+        name: "프레임 레이더",
+        url: "https://frameradar.faithfwd.cc",
+      },
+      ...(analysis.source_url
+        ? { isBasedOn: { "@type": "WebPage", url: analysis.source_url } }
+        : {}),
+    };
+
+    return {
+      title: ogTitle,
+      description: metaDescription,
+      canonical: pageUrl,
+      ogTitle,
+      ogDescription: metaDescription,
+      ogType: "article" as const,
+      noindex: false,
+      jsonLd,
+    };
+  }, [id, payload]);
+
+  useSEO(seoOptions);
 
   if (loading) {
     return <p className="text-sm text-slate">분석 결과를 불러오는 중...</p>;
