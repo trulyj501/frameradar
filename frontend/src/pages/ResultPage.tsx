@@ -560,17 +560,17 @@ export const ResultPage = () => {
           </div>
 
           {/* Bridge (Divider) */}
-          <div className="flex items-center justify-center my-12">
-            <div className="flex-grow border-t border-slate-100"></div>
-            <div className="shrink-0 mx-4 text-center space-y-1">
+          <div className="flex flex-col items-center justify-center my-12 gap-3">
+            <div className="w-full border-t border-slate-100"></div>
+            <div className="text-center space-y-1 px-4">
               <span className="block text-[#64748b] text-[14px] font-medium tracking-wide">
                 👀 같은 사실, 다르게 읽힙니다
               </span>
-              <span className="block text-[#64748b] text-[14px] font-medium tracking-wide">
+              <span className="block text-[#64748b] text-[14px] font-medium tracking-wide break-keep">
                 어떤 관점에서 보느냐에 따라 같은 사건도 다르게 해석될 수 있습니다.
               </span>
             </div>
-            <div className="flex-grow border-t border-slate-100"></div>
+            <div className="w-full border-t border-slate-100"></div>
           </div>
 
           {/* ClearView Frame Analysis Sub-section */}
